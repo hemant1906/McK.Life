@@ -30,10 +30,10 @@ namespace McK.GameOfLife.Controller
         public string GetState()
         {
             var builder = new StringBuilder();
-            for (int i = 0; i < _playField.Width; i++)
-                for (int j = 0; j < _playField.Height; j++)
+            for (int row = 0; row < _playField.Rows; row++)
+                for (int column = 0; column < _playField.Columns; column++)
                 {
-                    builder.Append(_playField.GetCell(i, j).IsAlive ? "1" : "0");
+                    builder.Append(_playField.GetCell(row, column).IsAlive ? "1" : "0");
                 }
             return builder.ToString();
         }
@@ -50,9 +50,9 @@ namespace McK.GameOfLife.Controller
         public void MoveToNextGeneration()
         {
             IPlayField oldGeneration = _playField.Clone();
-            for (int i = 0; i < _playField.Width; i++)
-                for (int j = 0; j < _playField.Height; j++)
-                    _gameRule.ApplyRule(_playField.GetCell(i, j), oldGeneration.GetNeighbours(i, j));
+            for (int row = 0; row < _playField.Rows; row++)
+                for (int column = 0; column < _playField.Columns; column++)
+                    _gameRule.ApplyRule(_playField.GetCell(row, column), oldGeneration.GetNeighbours(row, column));
             _playField.IncreaseGeneration(1);
             // parallel implementation
 
@@ -62,16 +62,13 @@ namespace McK.GameOfLife.Controller
             Parallel.For(0, oldGeneration.Width,
                          i =>
                          Parallel.For(0, oldGeneration.Height,
-                                      j => _gameRule.ApplyRule(_playField.GetCell(i, j),
-                                                               oldGeneration.GetNeighbours(i, j))
+                                      j => _gameRule.ApplyRule(_playField.GetCell(row, column),
+                                                               oldGeneration.GetNeighbours(row, column))
                              )
                 );
              * */
 
             #endregion
-
-            //oldGeneration = null;
-            //GC.Collect();
         }
     }
 }

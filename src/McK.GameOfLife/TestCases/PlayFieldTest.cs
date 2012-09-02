@@ -11,8 +11,8 @@ namespace McK.GameOfLife.TestCases
         public void TestCreatePlayfieldInstance()
         {
             IPlayField playField = new PlayFieldGrid(4, 4);
-            Assert.AreEqual(4, playField.Width);
-            Assert.AreEqual(4, playField.Height);
+            Assert.AreEqual(4, playField.Columns);
+            Assert.AreEqual(4, playField.Rows);
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace McK.GameOfLife.TestCases
             }
             catch (Exception exception)
             {
-                Assert.AreEqual("gridX and gridY value can't ne less than 4", exception.Message);
+                Assert.AreEqual("rows and columns value can't ne less than 4", exception.Message);
                 throw;
             }
         }
@@ -64,7 +64,7 @@ namespace McK.GameOfLife.TestCases
             }
             catch (Exception exception)
             {
-                Assert.AreEqual("x should be between 0 to 3 and y should be between 0 to 3", exception.Message);
+                Assert.AreEqual("row should be between 0 to 3 and column should be between 0 to 3", exception.Message);
                 throw;
             }
         }

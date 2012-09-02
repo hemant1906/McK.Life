@@ -11,11 +11,11 @@ namespace McK.GameOfLife.View
         public void Render(IPlayField playField)
         {
             var output = new StringBuilder();
-            for (int i = 0; i < playField.Height; i++)
-                for (int j = 0; j < playField.Width; j++)
+            for (int row = 0; row < playField.Rows; row++)
+                for (int column = 0; column < playField.Columns; column++)
                 {
-                    output.Append(playField.GetCell(i, j).IsAlive ? "#" : " ");
-                    if (j == playField.Width - 1)
+                    output.Append(playField.GetCell(row, column).IsAlive ? "#" : " ");
+                    if (column == playField.Columns - 1)
                         output.Append(Environment.NewLine);
                 }
 

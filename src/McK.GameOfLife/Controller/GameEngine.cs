@@ -8,18 +8,18 @@ namespace McK.GameOfLife.Controller
     public class GameEngine
     {
         private readonly GameController _gameController;
-        private readonly int _height;
+        private readonly int _rows;
         private readonly IPlayField _playField;
         private readonly IRenderer _renderer;
-        private readonly int _width;
+        private readonly int _columns;
 
-        public GameEngine(int width, int height)
+        public GameEngine(int rows, int columns)
         {
-            _width = width;
-            _height = height;
+            _columns = columns;
+            _rows = rows;
 
 
-            _playField = new PlayFieldGrid(width, height);
+            _playField = new PlayFieldGrid(rows, columns);
             IGameRule rule = new ClassicRule();
             _gameController = new GameController(_playField, rule);
             _renderer = new ConsoleRenderer();
@@ -30,7 +30,7 @@ namespace McK.GameOfLife.Controller
             var regEx = new Regex("^[0-1]*$");
             if (!regEx.IsMatch(initialState))
                 throw new ArgumentException("Input should be in 011101 format");
-            if (initialState.Length == 0 || initialState.Length > _width*_height)
+            if (initialState.Length == 0 || initialState.Length > _columns*_rows)
                 throw new ArgumentException("Input length is not correct");
             _gameController.SetState(initialState);
         }

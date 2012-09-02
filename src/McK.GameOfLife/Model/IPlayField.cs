@@ -4,8 +4,8 @@ namespace McK.GameOfLife.Model
 {
     public interface IPlayField
     {
-        int Width { get; }
-        int Height { get; }
+        int Columns { get; }
+        int Rows { get; }
 
         int CurrentGeneration { get; }
         void IncreaseGeneration(int increaseBy);
@@ -13,8 +13,8 @@ namespace McK.GameOfLife.Model
 
         void InitializePlayField(string state);
         Cell[,] GetCells();
-        Cell GetCell(int x, int y);
-        List<Cell> GetNeighbours(int x, int y);
+        Cell GetCell(int row, int column);
+        List<Cell> GetNeighbours(int row, int column);
         IPlayField Clone();
     }
 }

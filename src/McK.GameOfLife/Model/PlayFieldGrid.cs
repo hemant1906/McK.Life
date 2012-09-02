@@ -6,30 +6,30 @@ namespace McK.GameOfLife.Model
     internal class PlayFieldGrid : IPlayField
     {
         private readonly Cell[,] _internalGrid;
-        private readonly int _x;
-        private readonly int _y;
+        private readonly int _rows;
+        private readonly int _columns;
 
         //create playfield grid of x by y size Minimum is 4x4
-        public PlayFieldGrid(int gridX, int gridY)
+        public PlayFieldGrid(int rows, int columns)
         {
-            if (gridX < 4 || gridY < 4)
-                throw new ArgumentException("gridX and gridY value can't ne less than 4");
+            if (rows < 4 || columns < 4)
+                throw new ArgumentException("rows and columns value can't ne less than 4");
 
-            _x = gridX;
-            _y = gridY;
-            _internalGrid = new Cell[gridX,gridY];
+            _rows = rows;
+            _columns = columns;
+            _internalGrid = new Cell[rows,columns];
         }
 
         #region IPlayField Members
 
-        public int Width
+        public int Columns
         {
-            get { return _x; }
+            get { return _columns; }
         }
 
-        public int Height
+        public int Rows
         {
-            get { return _y; }
+            get { return _rows; }
         }
 
         public int CurrentGeneration { get; private set; }
@@ -44,93 +44,64 @@ namespace McK.GameOfLife.Model
             CurrentGeneration = 0; // reset the generation
             char[] stateArray = state.ToCharArray();
 
-            var cellFactory = new CellFactory(_x, _y);
-            for (int i = 0; i < _x; i++)
-                for (int j = 0; j < _y; j++)
+            var cellFactory = new CellFactory(_rows, _columns);
+            for (int row = 0; row < _rows; row++)
+                for (int column = 0; column < _columns; column++)
                 {
-                    _internalGrid[i, j] = cellFactory.CreateCell(i, j);
-                    if (stateArray.Length > TwoToOneDim(_y, i, j)) //we have state for this
+                    _internalGrid[row, column] = cellFactory.CreateCell(row, column);
+                    if (stateArray.Length > TwoToOneDim(_columns, row, column)) //we have state for this
                     {
-                        if (stateArray[TwoToOneDim(_y, i, j)] == '1')
-                            _internalGrid[i, j].ShouldLive();
+                        if (stateArray[TwoToOneDim(_columns, row, column)] == '1')
+                            _internalGrid[row, column].ShouldLive();
                         else
-                            _internalGrid[i, j].ShouldDie();
+                            _internalGrid[row, column].ShouldDie();
                     }
                 }
-            //SetNeighbours();
         }
 
-        /*
-            private void SetNeighbours()
-            {
-                //// go through each cell and set it's neighbours
-                //for (int i = 0; i < _x; i++)
-                //    for (int j = 0; j < _y; j++)
-                //    {
-                //        var cell =  _internalGrid[i, j];
-                //        if (!(cell is TopLeftCell || cell is LeftCell || cell is BottomLeftCell)) // these can't have left
-                //            cell.Left = _internalGrid[i - 1, j];
-                //        if (!(cell is TopLeftCell || cell is TopCell || cell is TopRightCell)) // these can't have top 
-                //            cell.Top = _internalGrid[i, j - 1];
-                //        if (!(cell is TopRightCell || cell is RightCell || cell is BottomRightCell)) // these can't have right
-                //            cell.Right = _internalGrid[i + 1, j];
-                //        if (!(cell is BottomLeftCell || cell is BottomCell || cell is BottomRightCell)) // these can't have Bottom
-                //            cell.Bottom = _internalGrid[i, j + 1];
-                //        if (!(cell is TopLeftCell)) // TopLeft can't have topLeft
-                //            cell.TopLeft = _internalGrid[i - 1, j - 1];
-                //        if (!(cell is TopRightCell)) // top right can't have top right
-                //            cell.TopRight = _internalGrid[i - 1, j + 1];
-                //        if (!(cell is BottomLeftCell)) // bottom left can't have bottom left
-                //            cell.BottomLeft = _internalGrid[i + 1, j - 1];
-                //        if (!(cell is BottomRightCell)) // bottom right can't have bottom right
-                //            cell.BottomRight = _internalGrid[i + 1, j + 1];
-                //    }
-            }
-
-        */
 
         public Cell[,] GetCells()
         {
             return _internalGrid;
         }
 
-        public Cell GetCell(int x, int y)
+        public Cell GetCell(int row, int column)
         {
-            ValidateIndex(x, y);
-            return _internalGrid[x, y];
+            ValidateIndex(row, column);
+            return _internalGrid[row, column];
         }
 
 
-        public List<Cell> GetNeighbours(int x, int y)
+        public List<Cell> GetNeighbours(int row, int column)
         {
-            Cell cell = GetCell(x, y);
+            Cell cell = GetCell(row, column);
             var neighbours = new List<Cell>();
             if (cell.CanHaveTopLeft)
-                neighbours.Add(GetCell(x - 1, y - 1).Clone());
+                neighbours.Add(GetCell(row - 1, column - 1).Clone());
             if (cell.CanHaveTop)
-                neighbours.Add(GetCell(x - 1, y).Clone());
+                neighbours.Add(GetCell(row - 1, column).Clone());
             if (cell.CanHaveTopRight)
-                neighbours.Add(GetCell(x - 1, y + 1).Clone());
+                neighbours.Add(GetCell(row - 1, column + 1).Clone());
             if (cell.CanHaveLeft)
-                neighbours.Add(GetCell(x, y - 1).Clone());
+                neighbours.Add(GetCell(row, column - 1).Clone());
             if (cell.CanHaveRight)
-                neighbours.Add(GetCell(x, y + 1).Clone());
+                neighbours.Add(GetCell(row, column + 1).Clone());
             if (cell.CanHaveBottomLeft)
-                neighbours.Add(GetCell(x + 1, y - 1).Clone());
+                neighbours.Add(GetCell(row + 1, column - 1).Clone());
             if (cell.CanHaveBottom)
-                neighbours.Add(GetCell(x + 1, y).Clone());
+                neighbours.Add(GetCell(row + 1, column).Clone());
             if (cell.CanHaveBottomRight)
-                neighbours.Add(GetCell(x + 1, y + 1).Clone());
+                neighbours.Add(GetCell(row + 1, column + 1).Clone());
             return neighbours;
         }
 
         public IPlayField Clone()
         {
-            IPlayField playFieldGrid = new PlayFieldGrid(_x, _y);
+            IPlayField playFieldGrid = new PlayFieldGrid(_rows, _columns);
             Cell[,] gridCopy = playFieldGrid.GetCells(); // get reference to this class's grid
-            for (int i = 0; i < _x; i++)
-                for (int j = 0; j < _y; j++)
-                    gridCopy[i, j] = GetCell(i, j).Clone();
+            for (int row = 0; row < _rows; row++)
+                for (int column = 0; column < _columns; column++)
+                    gridCopy[row, column] = GetCell(row, column).Clone();
 
             playFieldGrid.IncreaseGeneration(CurrentGeneration);
 
@@ -139,16 +110,16 @@ namespace McK.GameOfLife.Model
 
         #endregion
 
-        private int TwoToOneDim(int width, int x, int y)
+        private int TwoToOneDim(int columns, int row, int column)
         {
-            return x*width + y;
+            return row*columns + column;
         }
 
-        private void ValidateIndex(int x, int y)
+        private void ValidateIndex(int row, int column)
         {
-            if (x < 0 || y < 0 || x >= _x || y >= _y)
+            if (row < 0 || column < 0 || row >= _rows || column >= _columns)
                 throw new IndexOutOfRangeException(
-                    string.Format("x should be between 0 to {0} and y should be between 0 to {1}", _x - 1, _y - 1));
+                    string.Format("row should be between 0 to {0} and column should be between 0 to {1}", _rows - 1, _columns - 1));
         }
     }
 }

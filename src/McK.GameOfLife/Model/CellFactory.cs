@@ -4,41 +4,41 @@ namespace McK.GameOfLife.Model
 {
     internal class CellFactory
     {
-        private readonly int _x;
-        private readonly int _y;
+        private readonly int _rows;
+        private readonly int _columns;
 
-        public CellFactory(int gridX, int gridY)
+        public CellFactory(int rows, int columns)
         {
-            if (gridX < 4 || gridY < 4)
-                throw new ArgumentException("griX and gridY size should not be less than 4");
+            if (rows < 4 || columns < 4)
+                throw new ArgumentException("row and column size should not be less than 4");
 
-            _x = gridX;
-            _y = gridY;
+            _rows = rows;
+            _columns = columns;
         }
 
 
         // create cell on basis of the location of cell
-        public Cell CreateCell(int x, int y)
+        public Cell CreateCell(int row, int column)
         {
-            if (x == 0) // first line will have all top 
+            if (row == 0) // first line will have all top 
             {
-                if (y == 0) // top left
+                if (column == 0) // top left
                     return new TopLeftCell();
-                if (y == _y - 1) // top right
+                if (column == _columns - 1) // top right
                     return new TopRightCell();
                 return new TopCell();
             }
-            if (x == _x - 1) // bottom line will have all bottom
+            if (row == _rows - 1) // bottom line will have all bottom
             {
-                if (y == 0) // bottom left
+                if (column == 0) // bottom left
                     return new BottomLeftCell();
-                if (y == _y - 1) // bottom right
+                if (column == _columns - 1) // bottom right
                     return new BottomRightCell();
                 return new BottomCell();
             }
-            if (y == 0) // all left items
+            if (column == 0) // all left items
                 return new LeftCell();
-            if (y == _y - 1) // all right items
+            if (column == _columns - 1) // all right items
                 return new RightCell();
             return new Cell();
         }
