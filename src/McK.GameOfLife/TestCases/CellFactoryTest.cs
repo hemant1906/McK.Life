@@ -1,5 +1,6 @@
 ﻿using System;
 using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace McK.GameOfLife.TestCases
@@ -10,7 +11,7 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestFactoryInstance()
         {
-            var factory = new CellFactory(4, 4);
+            var factory = new GridCellFactory(4, 4);
             Assert.IsNotNull(factory);
         }
 
@@ -20,7 +21,7 @@ namespace McK.GameOfLife.TestCases
         {
             try
             {
-                var factory = new CellFactory(3, 4);
+                var factory = new GridCellFactory(3, 4);
             }
             catch (Exception exception)
             {
@@ -40,18 +41,18 @@ namespace McK.GameOfLife.TestCases
             //30 bottom left
             // 31 bottom, 32 bottom, 33 bottom right
 
-            var factory = new CellFactory(4, 4);
+            var factory = new GridCellFactory(4, 4);
             Assert.IsTrue(factory.CreateCell(0,0) is TopLeftCell);
             Assert.IsTrue(factory.CreateCell(0, 1) is TopCell);
             Assert.IsTrue(factory.CreateCell(0, 2) is TopCell);
             Assert.IsTrue(factory.CreateCell(0, 3) is TopRightCell);
             Assert.IsTrue(factory.CreateCell(1, 0) is LeftCell);
-            Assert.IsFalse(factory.CreateCell(1,1).GetType().IsSubclassOf(typeof(Cell)));
-            Assert.IsFalse(factory.CreateCell(1, 2).GetType().IsSubclassOf(typeof(Cell)));
+            Assert.IsTrue(factory.CreateCell(1,1) is CenterCell);
+            Assert.IsTrue(factory.CreateCell(1, 2) is CenterCell);
             Assert.IsTrue(factory.CreateCell(1, 3) is RightCell);
             Assert.IsTrue(factory.CreateCell(2, 0) is LeftCell);
-            Assert.IsFalse(factory.CreateCell(2, 1).GetType().IsSubclassOf(typeof(Cell)));
-            Assert.IsFalse(factory.CreateCell(2, 2).GetType().IsSubclassOf(typeof(Cell)));
+            Assert.IsTrue(factory.CreateCell(2, 1) is CenterCell);
+            Assert.IsTrue(factory.CreateCell(2, 2) is CenterCell);
             Assert.IsTrue(factory.CreateCell(2, 3) is RightCell);
             Assert.IsTrue(factory.CreateCell(3, 0) is BottomLeftCell);
             Assert.IsTrue(factory.CreateCell(3, 1) is BottomCell);

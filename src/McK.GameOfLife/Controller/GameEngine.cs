@@ -1,25 +1,27 @@
 using System;
 using System.Text.RegularExpressions;
-using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
+using McK.GameOfLife.Model.Playfields;
+using McK.GameOfLife.Model.Rules;
 using McK.GameOfLife.View;
 
 namespace McK.GameOfLife.Controller
 {
     public class GameEngine
     {
+        private readonly int _columns;
         private readonly GameController _gameController;
-        private readonly int _rows;
         private readonly IPlayField _playField;
         private readonly IRenderer _renderer;
-        private readonly int _columns;
+        private readonly int _rows;
 
         public GameEngine(int rows, int columns)
         {
             _columns = columns;
             _rows = rows;
 
-
-            _playField = new PlayFieldGrid(rows, columns);
+            ICellFactory factory = new GridCellFactory(rows, columns);
+            _playField = new GridPlayField(factory,rows, columns);
             IGameRule rule = new ClassicRule();
             _gameController = new GameController(_playField, rule);
             _renderer = new ConsoleRenderer();

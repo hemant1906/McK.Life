@@ -1,16 +1,11 @@
-﻿namespace McK.GameOfLife.Model
+﻿namespace McK.GameOfLife.Model.Cells
 {
-    public class Cell
+    public abstract class AbstractCell
     {
-        private int _currentGeneration;
+        public int CurrentGeneration { get; private set; }
 
-        public int CurrentGeneration
-        {
-            get { return _currentGeneration; }
-            protected set { _currentGeneration = value; }
-        }
 
-        public bool IsAlive { get; protected set; }
+        public bool IsAlive { get; private set; }
 
 
         public virtual bool CanHaveTopLeft
@@ -53,11 +48,6 @@
             get { return true; }
         }
 
-        public virtual Cell Clone()
-        {
-            var cell = new Cell {IsAlive = IsAlive, CurrentGeneration = CurrentGeneration};
-            return cell;
-        }
 
         public void ShouldLive()
         {
@@ -67,8 +57,16 @@
 
         public void ShouldDie()
         {
-            _currentGeneration = 0; //reset generation
+            CurrentGeneration = 0; //reset generation
             IsAlive = false;
+        }
+
+        public virtual AbstractCell Clone()
+        {
+            var cell = (AbstractCell) MemberwiseClone();
+            cell.IsAlive = IsAlive;
+            cell.CurrentGeneration = CurrentGeneration;
+            return cell;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace McK.GameOfLife.Model
+﻿namespace McK.GameOfLife.Model.Cells
 {
-    internal class TopRightCell : Cell
+    internal class TopRightCell : AbstractCell
     {
         public override bool CanHaveRight
         {
@@ -27,10 +27,5 @@
             get { return false; }
         }
 
-        public override Cell Clone()
-        {
-            var clone = new TopRightCell {IsAlive = IsAlive, CurrentGeneration = CurrentGeneration};
-            return clone;
-        }
     }
 }

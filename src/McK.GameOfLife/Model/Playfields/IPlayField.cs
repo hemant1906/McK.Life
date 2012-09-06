@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using McK.GameOfLife.Model.Cells;
 
-namespace McK.GameOfLife.Model
+namespace McK.GameOfLife.Model.Playfields
 {
     public interface IPlayField
     {
@@ -12,9 +13,9 @@ namespace McK.GameOfLife.Model
 
 
         void InitializePlayField(string state);
-        Cell[,] GetCells();
-        Cell GetCell(int row, int column);
-        List<Cell> GetNeighbours(int row, int column);
+        AbstractCell[,] GetCells();
+        AbstractCell GetCell(int row, int column);
+        List<AbstractCell> GetNeighbours(int row, int column);
         IPlayField Clone();
     }
 }

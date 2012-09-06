@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using McK.GameOfLife.Model.Cells;
 
-namespace McK.GameOfLife.Model
+namespace McK.GameOfLife.Model.Playfields
 {
-    internal class PlayFieldGrid : IPlayField
+    internal class GridPlayField : IPlayField
     {
-        private readonly Cell[,] _internalGrid;
+        private readonly AbstractCell[,] _internalGrid;
         private readonly int _rows;
         private readonly int _columns;
+        private readonly ICellFactory _cellFactory;
 
         //create playfield grid of x by y size Minimum is 4x4
-        public PlayFieldGrid(int rows, int columns)
+        public GridPlayField(ICellFactory cellFactory, int rows, int columns)
         {
             if (rows < 4 || columns < 4)
                 throw new ArgumentException("rows and columns value can't ne less than 4");
 
             _rows = rows;
             _columns = columns;
-            _internalGrid = new Cell[rows,columns];
+            _internalGrid = new AbstractCell[rows,columns];
+            _cellFactory = cellFactory;
         }
 
         #region IPlayField Members
@@ -44,11 +47,10 @@ namespace McK.GameOfLife.Model
             CurrentGeneration = 0; // reset the generation
             char[] stateArray = state.ToCharArray();
 
-            var cellFactory = new CellFactory(_rows, _columns);
             for (int row = 0; row < _rows; row++)
                 for (int column = 0; column < _columns; column++)
                 {
-                    _internalGrid[row, column] = cellFactory.CreateCell(row, column);
+                    _internalGrid[row, column] = _cellFactory.CreateCell(row, column);
                     if (stateArray.Length > TwoToOneDim(_columns, row, column)) //we have state for this
                     {
                         if (stateArray[TwoToOneDim(_columns, row, column)] == '1')
@@ -60,22 +62,22 @@ namespace McK.GameOfLife.Model
         }
 
 
-        public Cell[,] GetCells()
+        public AbstractCell[,] GetCells()
         {
             return _internalGrid;
         }
 
-        public Cell GetCell(int row, int column)
+        public AbstractCell GetCell(int row, int column)
         {
             ValidateIndex(row, column);
             return _internalGrid[row, column];
         }
 
 
-        public List<Cell> GetNeighbours(int row, int column)
+        public List<AbstractCell> GetNeighbours(int row, int column)
         {
-            Cell cell = GetCell(row, column);
-            var neighbours = new List<Cell>();
+            AbstractCell cell = GetCell(row, column);
+            var neighbours = new List<AbstractCell>();
             if (cell.CanHaveTopLeft)
                 neighbours.Add(GetCell(row - 1, column - 1).Clone());
             if (cell.CanHaveTop)
@@ -97,8 +99,9 @@ namespace McK.GameOfLife.Model
 
         public IPlayField Clone()
         {
-            IPlayField playFieldGrid = new PlayFieldGrid(_rows, _columns);
-            Cell[,] gridCopy = playFieldGrid.GetCells(); // get reference to this class's grid
+            ICellFactory cellFactory = new GridCellFactory(_rows,_columns);
+            IPlayField playFieldGrid = new GridPlayField(cellFactory,_rows, _columns);
+            AbstractCell[,] gridCopy = playFieldGrid.GetCells(); // get reference to this class's grid
             for (int row = 0; row < _rows; row++)
                 for (int column = 0; column < _columns; column++)
                     gridCopy[row, column] = GetCell(row, column).Clone();

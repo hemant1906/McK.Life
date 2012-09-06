@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Playfields;
+using McK.GameOfLife.Model.Rules;
 
 namespace McK.GameOfLife.Controller
 {

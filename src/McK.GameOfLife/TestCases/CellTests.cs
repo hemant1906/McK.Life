@@ -1,4 +1,5 @@
 ﻿using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace McK.GameOfLife.TestCases
@@ -9,7 +10,7 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestCellBirth()
         {
-            var cell = new Cell();
+            AbstractCell cell = new CenterCell();
             cell.ShouldLive();
             Assert.AreEqual(1, cell.CurrentGeneration);
             cell.ShouldLive();
@@ -20,7 +21,7 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestCellDeath()
         {
-            var cell = new Cell();
+            var cell = new CenterCell();
             cell.ShouldDie();
             Assert.AreEqual(0, cell.CurrentGeneration);
         }
@@ -28,7 +29,7 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestCellNeighbourAccessibility()
         {
-            var cell = new Cell();
+            var cell = new CenterCell();
             Assert.AreEqual(true, cell.CanHaveBottom);
             Assert.AreEqual(true, cell.CanHaveBottomLeft);
             Assert.AreEqual(true, cell.CanHaveBottomRight);
@@ -42,9 +43,9 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestCellCloning()
         {
-            var cell = new Cell();
+            var cell = new CenterCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -54,7 +55,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new TopLeftCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -63,7 +64,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new TopCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -72,7 +73,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new TopRightCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -81,7 +82,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new LeftCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -90,7 +91,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new RightCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -99,7 +100,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new BottomLeftCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -108,7 +109,7 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new BottomCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
@@ -117,11 +118,11 @@ namespace McK.GameOfLife.TestCases
         {
             var cell = new BottomRightCell();
             cell.ShouldLive();
-            Cell cloneCell = cell.Clone();
+            AbstractCell cloneCell = cell.Clone();
             CompareClones(cell, cloneCell);
         }
 
-        private void CompareClones(Cell cell, Cell cloneCell)
+        private void CompareClones(AbstractCell cell, AbstractCell cloneCell)
         {
             Assert.AreEqual(cell.CanHaveBottom, cloneCell.CanHaveBottom);
             Assert.AreEqual(cell.CanHaveBottomLeft, cloneCell.CanHaveBottomLeft);

@@ -1,5 +1,7 @@
 ﻿using System;
 using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
+using McK.GameOfLife.Model.Playfields;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace McK.GameOfLife.TestCases
@@ -10,7 +12,8 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestCreatePlayfieldInstance()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory,4, 4);
             Assert.AreEqual(4, playField.Columns);
             Assert.AreEqual(4, playField.Rows);
         }
@@ -21,7 +24,8 @@ namespace McK.GameOfLife.TestCases
         {
             try
             {
-                new PlayFieldGrid(3, 4);
+                ICellFactory factory = new GridCellFactory(4, 4);
+                new GridPlayField(factory,3, 4);
             }
             catch (Exception exception)
             {
@@ -33,9 +37,10 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestInitializePlayField()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory,4, 4);
             playField.InitializePlayField("01001101001");
-            Cell[,] cells = playField.GetCells();
+            AbstractCell[,] cells = playField.GetCells();
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     Assert.IsNotNull(cells[i, j]);
@@ -44,9 +49,10 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestGetCells()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory,4, 4);
             playField.InitializePlayField("01001101001");
-            Cell[,] cells = playField.GetCells();
+            AbstractCell[,] cells = playField.GetCells();
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     Assert.AreEqual(cells[i, j], playField.GetCell(i, j));
@@ -58,7 +64,8 @@ namespace McK.GameOfLife.TestCases
         {
             try
             {
-                IPlayField playField = new PlayFieldGrid(4, 4);
+                ICellFactory factory = new GridCellFactory(4, 4);
+                IPlayField playField = new GridPlayField(factory,4, 4);
                 playField.InitializePlayField("01001101001");
                 playField.GetCell(-1, -2);
             }

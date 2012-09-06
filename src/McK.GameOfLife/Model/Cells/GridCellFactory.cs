@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace McK.GameOfLife.Model
+namespace McK.GameOfLife.Model.Cells
 {
-    internal class CellFactory
+    internal class GridCellFactory : ICellFactory
     {
         private readonly int _rows;
         private readonly int _columns;
 
-        public CellFactory(int rows, int columns)
+        public GridCellFactory(int rows, int columns)
         {
             if (rows < 4 || columns < 4)
                 throw new ArgumentException("row and column size should not be less than 4");
@@ -18,7 +18,7 @@ namespace McK.GameOfLife.Model
 
 
         // create cell on basis of the location of cell
-        public Cell CreateCell(int row, int column)
+        public AbstractCell CreateCell(int row, int column)
         {
             if (row == 0) // first line will have all top 
             {
@@ -40,7 +40,7 @@ namespace McK.GameOfLife.Model
                 return new LeftCell();
             if (column == _columns - 1) // all right items
                 return new RightCell();
-            return new Cell();
+            return new CenterCell();
         }
     }
 }

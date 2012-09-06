@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Playfields;
 
 namespace McK.GameOfLife.View
 {

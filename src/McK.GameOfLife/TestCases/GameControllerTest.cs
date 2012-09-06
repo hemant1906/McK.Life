@@ -1,6 +1,9 @@
 ﻿using System;
 using McK.GameOfLife.Controller;
 using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
+using McK.GameOfLife.Model.Playfields;
+using McK.GameOfLife.Model.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace McK.GameOfLife.TestCases
@@ -11,7 +14,8 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestGameControllerInstance()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4,4);
+            IPlayField playField = new GridPlayField(factory, 4, 4);
             IGameRule rule = new ClassicRule();
             var controller = new GameController(playField, rule);
             Assert.IsNotNull(controller);
@@ -40,7 +44,8 @@ namespace McK.GameOfLife.TestCases
         {
             try
             {
-                IPlayField playField = new PlayFieldGrid(4, 4);
+                ICellFactory factory = new GridCellFactory(4, 4);
+                IPlayField playField = new GridPlayField(factory,4, 4);
 
                 var controller = new GameController(playField, null);
             }
@@ -54,7 +59,8 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestGameFieldInitialization()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory, 4, 4);
             IGameRule rule = new ClassicRule();
             var controller = new GameController(playField, rule);
             string state = "0100111011001010";
@@ -66,7 +72,8 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestNextGeneration()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory, 4, 4);
             IGameRule rule = new ClassicRule();
             var controller = new GameController(playField, rule);
             const string state = "0100010001000000"; // blinker 
@@ -79,7 +86,8 @@ namespace McK.GameOfLife.TestCases
         [TestMethod]
         public void TestMoveGeneration()
         {
-            IPlayField playField = new PlayFieldGrid(4, 4);
+            ICellFactory factory = new GridCellFactory(4, 4);
+            IPlayField playField = new GridPlayField(factory, 4, 4);
             IGameRule rule = new ClassicRule();
             var controller = new GameController(playField, rule);
             const string state = "0100010001000000"; // blinker 

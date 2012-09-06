@@ -1,6 +1,6 @@
-﻿namespace McK.GameOfLife.Model
+﻿namespace McK.GameOfLife.Model.Cells
 {
-    internal class BottomLeftCell : Cell
+    internal class BottomLeftCell : AbstractCell
     {
         public override bool CanHaveBottom
         {
@@ -27,12 +27,6 @@
             get { return false; }
         }
 
-        public override Cell Clone()
-        {
-            var clone = new BottomLeftCell();
-            clone.IsAlive = IsAlive;
-            clone.CurrentGeneration = CurrentGeneration;
-            return clone;
-        }
+
     }
 }

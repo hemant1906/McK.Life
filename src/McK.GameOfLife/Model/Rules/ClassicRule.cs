@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using McK.GameOfLife.Model.Cells;
 
-namespace McK.GameOfLife.Model
+namespace McK.GameOfLife.Model.Rules
 {
     internal class ClassicRule : IGameRule
     {
         #region IGameRule Members
 
-        public void ApplyRule(Cell cell, List<Cell> neighbours)
+        public void ApplyRule(AbstractCell cell, List<AbstractCell> neighbours)
         {
             if (cell == null)
                 throw new ArgumentNullException("cell");

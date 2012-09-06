@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using McK.GameOfLife.Model;
+using McK.GameOfLife.Model.Cells;
+using McK.GameOfLife.Model.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace McK.GameOfLife.TestCases
@@ -12,10 +14,10 @@ namespace McK.GameOfLife.TestCases
         public void TestClassicBecomeAliveRule()
         {
             IGameRule rule = new ClassicRule();
-            var cell = new Cell();
+            var cell = new CenterCell();
             Assert.AreEqual(false, cell.IsAlive);
             Assert.AreEqual(0, cell.CurrentGeneration);
-            var cells = new List<Cell> {new Cell(), new Cell(), new Cell(), new Cell()};
+            var cells = new List<AbstractCell> { new CenterCell(), new CenterCell(), new CenterCell(), new CenterCell() };
             cells[0].ShouldLive();
             cells[1].ShouldLive();
             cells[2].ShouldLive();
@@ -28,11 +30,11 @@ namespace McK.GameOfLife.TestCases
         public void TestClassicDieOverPopulationRule()
         {
             IGameRule rule = new ClassicRule();
-            var cell = new Cell();
+            var cell = new CenterCell();
             cell.ShouldLive();
             Assert.AreEqual(true, cell.IsAlive);
             Assert.AreEqual(1, cell.CurrentGeneration);
-            var cells = new List<Cell> {new Cell(), new Cell(), new Cell(), new Cell()};
+            var cells = new List<AbstractCell> { new CenterCell(), new CenterCell(), new CenterCell(), new CenterCell() };
             cells[0].ShouldLive();
             cells[1].ShouldLive();
             cells[2].ShouldLive();
@@ -46,11 +48,11 @@ namespace McK.GameOfLife.TestCases
         public void TestClassicDieUnderPopulationRule()
         {
             IGameRule rule = new ClassicRule();
-            var cell = new Cell();
+            var cell = new CenterCell();
             cell.ShouldLive();
             Assert.AreEqual(true, cell.IsAlive);
             Assert.AreEqual(1, cell.CurrentGeneration);
-            var cells = new List<Cell> {new Cell(), new Cell(), new Cell(), new Cell()};
+            var cells = new List<AbstractCell> { new CenterCell(), new CenterCell(), new CenterCell(), new CenterCell() };
             cells[0].ShouldLive();
             rule.ApplyRule(cell, cells);
             Assert.AreEqual(false, cell.IsAlive);
@@ -62,11 +64,11 @@ namespace McK.GameOfLife.TestCases
         public void TestClassicSustainLifeRule()
         {
             IGameRule rule = new ClassicRule();
-            var cell = new Cell();
+            var cell = new CenterCell();
             cell.ShouldLive();
             Assert.AreEqual(true, cell.IsAlive);
             Assert.AreEqual(1, cell.CurrentGeneration);
-            var cells = new List<Cell> {new Cell(), new Cell(), new Cell(), new Cell()};
+            var cells = new List<AbstractCell> { new CenterCell(), new CenterCell(), new CenterCell(), new CenterCell() };
             cells[0].ShouldLive();
             cells[1].ShouldLive();
             rule.ApplyRule(cell, cells);
@@ -81,7 +83,7 @@ namespace McK.GameOfLife.TestCases
             try
             {
                 IGameRule rule = new ClassicRule();
-                rule.ApplyRule(null, new List<Cell>());
+                rule.ApplyRule(null, new List<AbstractCell>());
             }
             catch (Exception exception)
             {
@@ -99,7 +101,7 @@ namespace McK.GameOfLife.TestCases
             try
             {
                 IGameRule rule = new ClassicRule();
-                rule.ApplyRule(new Cell(), null);
+                rule.ApplyRule(new CenterCell(), null);
             }
             catch (Exception exception)
             {
